@@ -1,10 +1,12 @@
+const path = require('path');
+
 const config = {
   mode: "production",
   entry: __dirname + "/src/js/main.js",
   output: {
     filename: "bundle.js",
+    path: path.resolve(__dirname + "/public"),
     assetModuleFilename: "images/[name][ext]",
-    clean: true,
   },
   devtool: false,
   module: {

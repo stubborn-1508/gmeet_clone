@@ -18,6 +18,7 @@ app.use(webpackDevMiddleWare(webpack(webpackConfig)));
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
+  console.log(ok);
   res.sendFile(__dirname + "/public/index.html");
 });
 
@@ -25,6 +26,7 @@ let connectedPeers = [];
 let connectedPeersStrangers = [];
 
 io.on("connection", (socket) => {
+  console.log(hello);
   connectedPeers.push(socket.id);
   // console.log(connectedPeers);
 
