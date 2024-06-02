@@ -1,11 +1,13 @@
 const express = require("express");
 const http = require("http");
+const path = require('path');
+const { Server } = require("socket.io");
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+const io = new Server(server); // Updated way to initialize socket.io
 
 //webpack
 const webpack = require("webpack");
@@ -15,7 +17,7 @@ const webpackConfig = require("./webpack.config");
 //middlewares
 app.use(webpackDevMiddleWare(webpack(webpackConfig)));
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => {
   console.log(ok);
@@ -26,7 +28,6 @@ let connectedPeers = [];
 let connectedPeersStrangers = [];
 
 io.on("connection", (socket) => {
-  console.log(hello);
   connectedPeers.push(socket.id);
   // console.log(connectedPeers);
 
