@@ -19,6 +19,11 @@ app.use(webpackDevMiddleWare(webpack(webpackConfig)));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve socket.io.js from the correct location
+app.get("/socket.io/socket.io.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "node_modules/socket.io/client-dist/socket.io.js"));
+});
+
 app.get("/", (req, res) => {
   console.log(ok);
   res.sendFile(__dirname + "/public/index.html");
