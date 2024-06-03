@@ -29,6 +29,10 @@ const config = {
         test: /\.(png|svg|jpg|jpeg|gif|ico|webmanifest|xml)$/i,
         type: "asset/resource",
       },
+      {
+        resourceQuery: /raw/,
+        type: "asset/source",
+      },
     ],
   },
   performance: {

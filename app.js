@@ -7,6 +7,15 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 const server = http.createServer(app);
+
+const clientFile = require("./node_modules/socket.io/client-dist/socket.io.min?raw");
+const clientMap = require("./node_modules/socket.io/client-dist/socket.io.min.js.map?raw");
+
+Server.sendFile = (filename, req, res) => {
+  res.end(filename.endsWith(".map") ? clientMap : clientFile);
+};
+
+
 const io = new Server(server); // Updated way to initialize socket.io
 
 //webpack
@@ -19,13 +28,7 @@ app.use(webpackDevMiddleWare(webpack(webpackConfig)));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve socket.io.js from the correct location
-app.get("/socket.io/socket.io.js", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "node_modules/socket.io/client-dist/socket.io.js"));
-});
-
 app.get("/", (req, res) => {
-  console.log(ok);
   res.sendFile(__dirname + "/public/index.html");
 });
 
@@ -34,7 +37,6 @@ let connectedPeersStrangers = [];
 
 io.on("connection", (socket) => {
   connectedPeers.push(socket.id);
-  // console.log(connectedPeers);
 
   socket.on("pre-offer", (data) => {
     const { calleePersonalCode, callType } = data;
